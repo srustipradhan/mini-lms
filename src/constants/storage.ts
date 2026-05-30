@@ -1,0 +1,15 @@
+export const STORAGE_KEYS = {
+  accessToken: 'auth.access_token',
+  refreshToken: 'auth.refresh_token',
+  user: 'auth.user',
+  coursesCache: 'cache.courses',
+  instructorsCache: 'cache.instructors',
+  bookmarks: 'bookmarks.ids',
+  bookmarkedCourses: 'bookmarks.courses',
+  enrolledCourses: 'enrolled.ids',
+  courseProgress: 'learning.progress',
+  theme: 'settings.theme',
+  lastActiveAt: 'activity.last_active',
+  biometricEnabled: 'settings.biometric',
+  recommendations: 'cache.recommendations',
+} as const;
