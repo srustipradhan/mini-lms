@@ -10,12 +10,15 @@ import { Button } from '@/components/ui/Button';
 import { CourseImage } from '@/components/ui/CourseImage';
 import { useCourses } from '@/hooks/useCourses';
 import { useBookmarks } from '@/hooks/useBookmarks';
+import { useTheme } from '@/hooks/useTheme';
 import { useToastStore } from '@/store/toast.store';
+import { cn } from '@/utils/cn';
 import { formatCurrency, formatRating } from '@/utils/format';
 
 export default function CourseDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
+  const { isDark } = useTheme();
   const { getCourseById, enrollCourse, isEnrolled } = useCourses();
   const { isBookmarked, toggle } = useBookmarks();
   const showToast = useToastStore((s) => s.show);
@@ -45,7 +48,9 @@ export default function CourseDetailScreen() {
     return (
       <GradientBackground>
         <SafeAreaView className="flex-1 items-center justify-center px-6">
-          <Text className="text-lg font-semibold text-slate-900 dark:text-white">Course not found</Text>
+          <Text className={cn('text-lg font-semibold', isDark ? 'text-white' : 'text-slate-900')}>
+            Course not found
+          </Text>
           <Button label="Go back" className="mt-4 w-full" onPress={() => router.back()} />
         </SafeAreaView>
       </GradientBackground>
@@ -67,8 +72,10 @@ export default function CourseDetailScreen() {
           <View className="px-5 pt-4">
             <View className="mb-3 flex-row items-start justify-between">
               <View className="flex-1 pr-3">
-                <Text className="text-2xl font-bold text-slate-900 dark:text-white">{course.title}</Text>
-                <Text className="mt-1 text-slate-500 dark:text-slate-300">
+                <Text className={cn('text-2xl font-bold', isDark ? 'text-white' : 'text-slate-900')}>
+                  {course.title}
+                </Text>
+                <Text className={cn('mt-1', isDark ? 'text-slate-300' : 'text-slate-500')}>
                   {course.instructorName} · {course.category}
                 </Text>
               </View>
@@ -76,7 +83,10 @@ export default function CourseDetailScreen() {
                 accessibilityRole="button"
                 accessibilityLabel={bookmarked ? 'Remove bookmark' : 'Add bookmark'}
                 onPress={handleBookmark}
-                className="rounded-2xl bg-white/80 p-3 dark:bg-slate-800/80"
+                className={cn(
+                  'rounded-2xl p-3',
+                  isDark ? 'bg-white/12' : 'bg-white/80',
+                )}
               >
                 <Ionicons
                   name={bookmarked ? 'bookmark' : 'bookmark-outline'}
@@ -88,15 +98,15 @@ export default function CourseDetailScreen() {
 
             <GlassCard>
               <View className="mb-3 flex-row flex-wrap gap-2">
-                <Badge label={`★ ${formatRating(course.rating)}`} />
-                <Badge label={course.level} />
-                <Badge label={`${course.lessonsCount} lessons`} />
-                <Badge label={`${course.durationHours}h`} />
+                <Badge label={`★ ${formatRating(course.rating)}`} isDark={isDark} />
+                <Badge label={course.level} isDark={isDark} />
+                <Badge label={`${course.lessonsCount} lessons`} isDark={isDark} />
+                <Badge label={`${course.durationHours}h`} isDark={isDark} />
               </View>
-              <Text className="text-base leading-6 text-slate-600 dark:text-slate-200">
+              <Text className={cn('text-base leading-6', isDark ? 'text-slate-200' : 'text-slate-600')}>
                 {course.description}
               </Text>
-              <Text className="mt-4 text-2xl font-bold text-primary-600 dark:text-primary-300">
+              <Text className={cn('mt-4 text-2xl font-bold', isDark ? 'text-indigo-200' : 'text-primary-600')}>
                 {formatCurrency(course.price)}
               </Text>
             </GlassCard>
@@ -120,10 +130,22 @@ export default function CourseDetailScreen() {
   );
 }
 
-function Badge({ label }: { label: string }) {
+function Badge({ label, isDark }: { label: string; isDark: boolean }) {
   return (
-    <View className="rounded-full bg-primary-50 px-3 py-1 dark:bg-primary-500/20">
-      <Text className="text-xs font-semibold text-primary-700 dark:text-primary-200">{label}</Text>
+    <View
+      className={cn(
+        'rounded-full px-3 py-1',
+        isDark ? 'bg-indigo-500/25' : 'bg-primary-50',
+      )}
+    >
+      <Text
+        className={cn(
+          'text-xs font-semibold',
+          isDark ? 'text-indigo-100' : 'text-primary-700',
+        )}
+      >
+        {label}
+      </Text>
     </View>
   );
 }

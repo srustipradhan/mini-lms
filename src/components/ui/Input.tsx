@@ -1,5 +1,6 @@
 import { forwardRef, memo } from 'react';
 import { Text, TextInput, View, type TextInputProps } from 'react-native';
+import { useTheme } from '@/hooks/useTheme';
 import { cn } from '@/utils/cn';
 
 interface InputProps extends TextInputProps {
@@ -13,21 +14,33 @@ export const Input = memo(
     { label, error, containerClassName, className, ...props },
     ref,
   ) {
+    const { isDark } = useTheme();
+
     return (
       <View className={cn('mb-4', containerClassName)}>
-        <Text className="mb-2 text-sm font-semibold text-slate-700 dark:text-slate-200">{label}</Text>
+        <Text
+          className={cn(
+            'mb-2 text-sm font-semibold',
+            isDark ? 'text-slate-100' : 'text-slate-700',
+          )}
+        >
+          {label}
+        </Text>
         <TextInput
           ref={ref}
-          placeholderTextColor="#94A3B8"
+          placeholderTextColor={isDark ? '#94A3B8' : '#64748B'}
           accessibilityLabel={label}
           className={cn(
-            'rounded-2xl border border-slate-200 bg-white/80 px-4 py-3.5 text-base text-slate-900 dark:border-slate-700 dark:bg-slate-900/60 dark:text-white',
+            'rounded-2xl border px-4 py-3.5 text-base',
+            isDark
+              ? 'border-slate-500/70 bg-slate-900/70 text-white'
+              : 'border-slate-200 bg-white/80 text-slate-900',
             error && 'border-red-400',
             className,
           )}
           {...props}
         />
-        {error ? <Text className="mt-1.5 text-sm text-red-500">{error}</Text> : null}
+        {error ? <Text className="mt-1.5 text-sm text-red-400">{error}</Text> : null}
       </View>
     );
   }),

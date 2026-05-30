@@ -6,11 +6,14 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { RegisterForm } from '@/components/forms/RegisterForm';
 import { useAuthStore } from '@/store/auth.store';
 import { useAuthScreenSubmit } from '@/hooks/useAuthScreenSubmit';
+import { useTheme } from '@/hooks/useTheme';
+import { cn } from '@/utils/cn';
 import type { RegisterFormValues } from '@/features/auth/schemas/auth.schema';
 
 export default function RegisterScreen() {
   const router = useRouter();
   const register = useAuthStore((s) => s.register);
+  const { isDark } = useTheme();
 
   const submitRegister = useCallback(
     async (values: RegisterFormValues) => {
@@ -31,19 +34,26 @@ export default function RegisterScreen() {
   return (
     <GradientBackground>
       <View className="flex-1 justify-center px-6">
-        <Text className="mb-2 text-3xl font-bold text-slate-900 dark:text-white">Create account</Text>
-        <Text className="mb-8 text-base text-slate-600 dark:text-slate-300">
+        <Text
+          className={cn('mb-2 text-3xl font-bold', isDark ? 'text-white' : 'text-slate-900')}
+        >
+          Create account
+        </Text>
+        <Text className={cn('mb-8 text-base', isDark ? 'text-slate-200' : 'text-slate-600')}>
           Create an account to save bookmarks and track courses
         </Text>
 
         <GlassCard animated>
           <RegisterForm loading={isSubmitting} onFieldChange={clearError} onSubmit={handleSubmit} />
-          {error ? <Text className="text-center text-sm text-red-500">{error}</Text> : null}
+          {error ? <Text className="text-center text-sm text-red-400">{error}</Text> : null}
         </GlassCard>
 
-        <Text className="mt-6 text-center text-slate-600 dark:text-slate-300">
+        <Text className={cn('mt-6 text-center', isDark ? 'text-slate-200' : 'text-slate-600')}>
           Already have an account?{' '}
-          <Link href="/(auth)/login" className="font-semibold text-primary-600 dark:text-primary-300">
+          <Link
+            href="/(auth)/login"
+            className={cn('font-semibold', isDark ? 'text-indigo-200' : 'text-primary-600')}
+          >
             Sign in
           </Link>
         </Text>

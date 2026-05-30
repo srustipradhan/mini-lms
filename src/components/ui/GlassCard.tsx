@@ -1,6 +1,7 @@
 import { memo, type ReactNode } from 'react';
 import { View, type ViewProps } from 'react-native';
 import { MotiView } from 'moti';
+import { useTheme } from '@/hooks/useTheme';
 import { cn } from '@/utils/cn';
 
 interface GlassCardProps extends ViewProps {
@@ -15,10 +16,15 @@ export const GlassCard = memo(function GlassCard({
   className,
   ...props
 }: GlassCardProps) {
+  const { isDark } = useTheme();
+
   const content = (
     <View
       className={cn(
-        'overflow-hidden rounded-3xl border border-white/30 bg-white/70 p-4 shadow-lg shadow-slate-900/5 dark:border-slate-700/40 dark:bg-slate-900/50',
+        'overflow-hidden rounded-3xl border p-4 shadow-lg',
+        isDark
+          ? 'border-indigo-400/25 bg-slate-800/90 shadow-black/25'
+          : 'border-white/30 bg-white/70 shadow-slate-900/5',
         className,
       )}
       {...props}

@@ -7,12 +7,15 @@ import { LoginForm } from '@/components/forms/LoginForm';
 import { useAuthStore } from '@/store/auth.store';
 import { useBiometric } from '@/hooks/useBiometric';
 import { useAuthScreenSubmit } from '@/hooks/useAuthScreenSubmit';
+import { useTheme } from '@/hooks/useTheme';
+import { cn } from '@/utils/cn';
 import type { LoginFormValues } from '@/features/auth/schemas/auth.schema';
 
 export default function LoginScreen() {
   const router = useRouter();
   const login = useAuthStore((s) => s.login);
   const { isAvailable, isEnabled, authenticate } = useBiometric();
+  const { isDark } = useTheme();
 
   const submitLogin = useCallback(
     async (values: LoginFormValues) => {
@@ -39,27 +42,39 @@ export default function LoginScreen() {
   return (
     <GradientBackground>
       <View className="flex-1 justify-center px-6">
-        <Text className="mb-2 text-3xl font-bold text-slate-900 dark:text-white">Welcome back</Text>
-        <Text className="mb-8 text-base text-slate-600 dark:text-slate-300">
+        <Text
+          className={cn('mb-2 text-3xl font-bold', isDark ? 'text-white' : 'text-slate-900')}
+        >
+          Welcome back
+        </Text>
+        <Text className={cn('mb-8 text-base', isDark ? 'text-slate-200' : 'text-slate-600')}>
           Sign in to continue your learning journey
         </Text>
 
         <GlassCard animated>
           <LoginForm loading={isSubmitting} onFieldChange={clearError} onSubmit={handleSubmit} />
-          {error ? <Text className="mb-3 text-center text-sm text-red-500">{error}</Text> : null}
+          {error ? <Text className="mb-3 text-center text-sm text-red-400">{error}</Text> : null}
 
           {isAvailable && isEnabled ? (
             <Pressable accessibilityRole="button" onPress={handleBiometric} className="mt-2 py-2">
-              <Text className="text-center text-sm font-semibold text-primary-600 dark:text-primary-300">
+              <Text
+                className={cn(
+                  'text-center text-sm font-semibold',
+                  isDark ? 'text-indigo-200' : 'text-primary-600',
+                )}
+              >
                 Unlock with biometrics
               </Text>
             </Pressable>
           ) : null}
         </GlassCard>
 
-        <Text className="mt-6 text-center text-slate-600 dark:text-slate-300">
+        <Text className={cn('mt-6 text-center', isDark ? 'text-slate-200' : 'text-slate-600')}>
           New here?{' '}
-          <Link href="/(auth)/register" className="font-semibold text-primary-600 dark:text-primary-300">
+          <Link
+            href="/(auth)/register"
+            className={cn('font-semibold', isDark ? 'text-indigo-200' : 'text-primary-600')}
+          >
             Create account
           </Link>
         </Text>
