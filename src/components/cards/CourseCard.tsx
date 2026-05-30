@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { GlassCard } from '@/components/ui/GlassCard';
@@ -11,7 +12,7 @@ interface CourseCardProps {
   onPress: (courseId: string) => void;
 }
 
-export function CourseCard({ course, onPress }: CourseCardProps) {
+export const CourseCard = memo(function CourseCard({ course, onPress }: CourseCardProps) {
   const isBookmarked = useBookmarksStore((s) => s.bookmarkedIds.includes(course.id));
   const toggleBookmark = useBookmarksStore((s) => s.toggleBookmark);
 
@@ -79,4 +80,4 @@ export function CourseCard({ course, onPress }: CourseCardProps) {
       </View>
     </GlassCard>
   );
-}
+});
