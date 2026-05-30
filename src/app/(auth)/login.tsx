@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, Text } from 'react-native';
 import { Link, useRouter } from 'expo-router';
+import { AuthScreenLayout } from '@/components/layout/AuthScreenLayout';
 import { GradientBackground } from '@/components/ui/GradientBackground';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { LoginForm } from '@/components/forms/LoginForm';
@@ -41,7 +42,7 @@ export default function LoginScreen() {
 
   return (
     <GradientBackground>
-      <View className="flex-1 justify-center px-6">
+      <AuthScreenLayout>
         <Text
           className={cn('mb-2 text-3xl font-bold', isDark ? 'text-white' : 'text-slate-900')}
         >
@@ -78,7 +79,7 @@ export default function LoginScreen() {
             Create account
           </Link>
         </Text>
-      </View>
+      </AuthScreenLayout>
     </GradientBackground>
   );
 }

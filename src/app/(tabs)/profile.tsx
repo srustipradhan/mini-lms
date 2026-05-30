@@ -1,5 +1,5 @@
 import { useCallback, useEffect, type ReactNode } from 'react';
-import { Pressable, Switch, Text, View } from 'react-native';
+import { Pressable, ScrollView, Switch, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -62,7 +62,8 @@ export default function ProfileScreen() {
 
   return (
     <GradientBackground>
-      <SafeAreaView className="flex-1 px-5" edges={['top']}>
+      <SafeAreaView className="flex-1" edges={['top']}>
+        <ScrollView contentContainerClassName="px-5 pb-8">
         <Text className="pt-2 text-3xl font-bold text-slate-900 dark:text-white">Profile</Text>
 
         <GlassCard animated className="mt-6 items-center">
@@ -134,6 +135,7 @@ export default function ProfileScreen() {
         </GlassCard>
 
         <Button label="Sign out" variant="danger" onPress={handleLogout} className="mt-6" />
+        </ScrollView>
       </SafeAreaView>
     </GradientBackground>
   );
